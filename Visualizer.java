@@ -1,49 +1,43 @@
 
-
 import java.awt.*;
-/*<applet code="Chess" width=600 height=600>
-</applet>*/
-// Extends Applet Class
-public class Visualizer extends Frame{
-    
- 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class Visualizer extends Frame {
+
     private Board board;
-    public Visualizer(Board board){
-        this.board=board;
-        setSize(600,600);
+    private static final int Frame_Size = 600;
+
+    public Visualizer(Board board) {
+        this.board = board;
+        setSize(Frame_Size, Frame_Size);
         setVisible(true);
+
+        // ends Programm, when window is closed
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
     }
- 
-    // Use paint() method
-    public void paint(Graphics g){
-        int size=board.getSize();
-        int x, y;
-        for (int row = 0; row <size; row++) {
- 
-            for (int col = 0; col <size; col++) {
- 
-                // Set x coordinates of rectangle
-                // by 20 times
-                x = row * 20;
- 
-                // Set y coordinates of rectangle
-                // by 20 times
-                y = col * 20;
- 
-                // Check whether row and column
-                // are in even position
-                // If it is true set Black color
-                g.setColor(convertColor(board.getColor(row,col)));
- 
-                // Create a rectangle with
-                // length and breadth of 20
-                g.fillRect(x, y, 20, 20);
+
+    public void paint(Graphics g) {
+        int size = board.getSize();
+        int width = 600 / size;
+        int height = 600 / size;
+        for (int i = 0; i < size; i++) {
+            int y = i * height;
+            for (int j = 0; j < size; j++) {
+                int x = j * width;
+                g.setColor(convertColor(board.getColor(i, j)));
+                g.fillRect(x, y, width, height);
             }
         }
     }
 
-    private static java.awt.Color convertColor(Color color){
-        switch(color){
+    // converts color from slef made Enum to java.awt.Color
+    private static java.awt.Color convertColor(Color color) {
+        switch (color) {
             case RED:
                 return java.awt.Color.RED;
             case GREEN:
@@ -61,28 +55,11 @@ public class Visualizer extends Frame{
         }
     }
 
-
-
-
-
-
-
-
-    public static String displayBoard(Board board){
-        String output="";
-        for(int i=0;i<board.getSize();i++){
-            for(int j=0;j<board.getSize();j++){
-                char current=board.getColor(i,j).toString().charAt(0);
-                if(board.isConverted(i,j)){
-                    current=Character.toLowerCase(current);
-                }
-                output+=current;
-            }
-            output+="\n";
-        }
-        return output;
+    // prints teh board to the console and returns it as a String
+    public static String PrintBoard(Board board) {
+        String out = board.toString();
+        System.out.println(out);
+        return out;
     }
 
-    
-    
 }

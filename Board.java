@@ -5,7 +5,9 @@ public class Board {
     private int size;
     private int Score;
     private boolean solved;
+    private int moves;
 
+    // creates a random board with a given size
     public Board(int size) {
         this.size = size;
         board = new Color[size][size];
@@ -20,6 +22,8 @@ public class Board {
         solved = false;
     }
 
+    // creates a board with a given size and a given board !only square Boards were
+    // considered when implementing everything!
     public Board(Color[][] board, boolean[][] converted, int size, int convertedSize, boolean solved) {
         this.board = board;
         this.converted = converted;
@@ -28,7 +32,8 @@ public class Board {
         this.solved = solved;
     }
 
-    // Creates empty board
+    // Creates empty board placeholder is only there for method identification true
+    // or false does not matter
     public Board(int size, boolean placeholder) {
         this.size = size;
         board = new Color[size][size];
@@ -60,6 +65,10 @@ public class Board {
         return solved;
     }
 
+    public int getMoves() {
+        return moves;
+    }
+
     public Board copy() {
         Board copy = new Board(size, true);
         for (int i = 0; i < size; i++) {
@@ -73,7 +82,11 @@ public class Board {
         return copy;
     }
 
-    public void changeColor(Color color) {
+    /*
+     * changes the color of the converted tiles and converts adjacent tiles
+     */
+    public void move(Color color) {
+        moves++;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (converted[i][j]) {
@@ -82,36 +95,29 @@ public class Board {
                 } else if (board[i][j] == color) {
                     // converts adjacent tiles of same color
                     boolean notConverted = true;
-                    try {
+                    if (i > 0) {
                         if (notConverted && converted[i - 1][j]) {
                             convert(i, j);
                             notConverted = false;
                         }
-                    } catch (Exception e) {
                     }
-                    try {
+                    if (i < size - 1) {
                         if (notConverted && converted[i + 1][j]) {
                             convert(i, j);
                             notConverted = false;
-
                         }
-                    } catch (Exception e) {
                     }
-                    try {
+                    if (j > 0) {
                         if (notConverted && converted[i][j - 1]) {
                             convert(i, j);
                             notConverted = false;
-
                         }
-                    } catch (Exception e) {
                     }
-                    try {
+                    if (j < size - 1) {
                         if (notConverted && converted[i][j + 1]) {
                             convert(i, j);
                             notConverted = false;
-
                         }
-                    } catch (Exception e) {
                     }
                 }
             }
@@ -124,5 +130,25 @@ public class Board {
         if (Score == size * size) {
             solved = true;
         }
+    }
+
+    /*
+     * returns a String representation of the board, with the first letter of each
+     * color capitalized if it is not converted and lowercase if it is converted
+     */
+    @Override
+    public String toString() {
+        String output = "";
+        for (int i = 0; i < getSize(); i++) {
+            for (int j = 0; j < getSize(); j++) {
+                char current = getColor(i, j).toString().charAt(0);
+                if (isConverted(i, j)) {
+                    current = Character.toLowerCase(current);
+                }
+                output += current;
+            }
+            output += "\n";
+        }
+        return output;
     }
 }

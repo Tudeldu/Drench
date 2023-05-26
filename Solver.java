@@ -1,34 +1,54 @@
-
 public class Solver {
-    public static void solve(Board board) {
+    private Board board;
+    private Visualizer visualizer;
+    private static final int PAUSE_BETWEEN_FRAMES = 0;
+
+    public Solver(Board board, Visualizer visualizer) {
+        this.board = board;
+        this.visualizer = visualizer;
+    }
+
+    // does the best move until the board is solved, updates the visualizer and
+    // prints the board to the consoole
+    public void solve() {
         while (!board.isSolved()) {
-            Color bestMove = getBestMove(board);
-            board.changeColor(bestMove);
-            System.out.println(Visualizer.displayBoard(board));
+            Color bestMove = getBestMove();
+            board.move(bestMove);
+
+            try {
+                Thread.sleep(PAUSE_BETWEEN_FRAMES);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            visualizer.repaint();
+            System.out.println(board);
         }
     }
 
-    private static int getScoreAfterMove(Board board, Color color) {
+    // returns the hypothetical score after a move
+    private int getScoreAfterMove(Color color) {
         Board copy = board.copy();
-        copy.changeColor(color);
+
+        copy.move(color);
         return copy.getScore();
     }
 
-    private static Color getBestMove(Board board) {
+    // returns the move that will result in the highest score int one move
+    private Color getBestMove() {
         Color bestMove = Color.RED;
-        if (getScoreAfterMove(board, Color.GREEN) > getScoreAfterMove(board, Color.RED)) {
+        if (getScoreAfterMove(Color.GREEN) > getScoreAfterMove(Color.RED)) {
             bestMove = Color.GREEN;
         }
-        if (getScoreAfterMove(board, Color.BLUE) > getScoreAfterMove(board, bestMove)) {
+        if (getScoreAfterMove(Color.BLUE) > getScoreAfterMove(bestMove)) {
             bestMove = Color.BLUE;
         }
-        if (getScoreAfterMove(board, Color.YELLOW) > getScoreAfterMove(board, bestMove)) {
+        if (getScoreAfterMove(Color.YELLOW) > getScoreAfterMove(bestMove)) {
             bestMove = Color.YELLOW;
         }
-        if (getScoreAfterMove(board, Color.ORANGE) > getScoreAfterMove(board, bestMove)) {
+        if (getScoreAfterMove(Color.ORANGE) > getScoreAfterMove(bestMove)) {
             bestMove = Color.ORANGE;
         }
-        if (getScoreAfterMove(board, Color.PINK) > getScoreAfterMove(board, bestMove)) {
+        if (getScoreAfterMove(Color.PINK) > getScoreAfterMove(bestMove)) {
             bestMove = Color.PINK;
         }
         return bestMove;
