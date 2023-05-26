@@ -6,8 +6,8 @@ public enum Color {
     ORANGE,
     PINK;
 
-    public static Color randomColor(){
-        int rnd=((int)(Math.random()*100))%6;
+    public static Color randomColor() {
+        int rnd = ((int) (Math.random() * 100)) % 6;
         return switch (rnd) {
             case 0 -> RED;
             case 1 -> GREEN;

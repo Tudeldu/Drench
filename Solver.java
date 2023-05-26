@@ -1,7 +1,7 @@
 public class Solver {
     private Board board;
     private Visualizer visualizer;
-    private static final int PAUSE_BETWEEN_FRAMES = 0;
+    private static final int PAUSE_BETWEEN_FRAMES = 1;
 
     public Solver(Board board, Visualizer visualizer) {
         this.board = board;
@@ -36,20 +36,13 @@ public class Solver {
     // returns the move that will result in the highest score int one move
     private Color getBestMove() {
         Color bestMove = Color.RED;
-        if (getScoreAfterMove(Color.GREEN) > getScoreAfterMove(Color.RED)) {
-            bestMove = Color.GREEN;
-        }
-        if (getScoreAfterMove(Color.BLUE) > getScoreAfterMove(bestMove)) {
-            bestMove = Color.BLUE;
-        }
-        if (getScoreAfterMove(Color.YELLOW) > getScoreAfterMove(bestMove)) {
-            bestMove = Color.YELLOW;
-        }
-        if (getScoreAfterMove(Color.ORANGE) > getScoreAfterMove(bestMove)) {
-            bestMove = Color.ORANGE;
-        }
-        if (getScoreAfterMove(Color.PINK) > getScoreAfterMove(bestMove)) {
-            bestMove = Color.PINK;
+        int bestScore = 0;
+        for (Color color : Color.values()) {
+            int score = getScoreAfterMove(color);
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = color;
+            }
         }
         return bestMove;
     }
