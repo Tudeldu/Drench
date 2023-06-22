@@ -1,13 +1,19 @@
 public class Main {
-    private static final int SIZE = 10;
+    private static final int SIZE = 150;
 
     public static void main(String[] args) {
-        Board board = new Board(SIZE);
-        System.out.println(board);
+        Board board1 = new Board(SIZE);
+        Board board2 = board1.copy();
+        System.out.println(board1);
 
-        Visualizer visualizer = new Visualizer(board);
-        Solver solver = new DepthSolver(board, visualizer);
+        Visualizer visualizer1 = new Visualizer(board1);
+        Visualizer visualizer2 = new Visualizer(board2);
+        Solver solver = new DepthSolver(board1, visualizer1);
+        Solver solver2 = new SimpleSolver(board2, visualizer2);
         solver.solve();
-        System.out.println("Solved " + SIZE + "x" + SIZE + " board in " + board.getMoves() + " moves.");
+        solver2.solve();
+        System.out.println("Solved " + SIZE + "x" + SIZE + " board in " + board1.getMoves() + " moves. with DepthSolver");
+        System.out.println("Solved " + SIZE + "x" + SIZE + " board in " + board2.getMoves() + " moves. with SimpleSolver");
+        
     }
 }

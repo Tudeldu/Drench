@@ -42,7 +42,7 @@ public class DepthSolver extends Solver{
         }
         int[] scores=new int[futureMoves.length];
         for(int i=0;i<scores.length;i++){
-            scores[i]=futureMoves[i].getScore();
+            scores[i]=futureMoves[i].getScore()+nextMoves[i/Color.values().length].getScore();
         }
         int bestScore=0;
         int bestMove=0;
